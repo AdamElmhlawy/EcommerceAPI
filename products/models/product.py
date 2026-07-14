@@ -8,14 +8,6 @@ from .common import SlugModel
 
 
 class Product(SlugModel):
-    class Rating(models.IntegerChoices):
-        ZERO = 0, "Zero Stars"
-        ONE = 1, "One Star"
-        TWO = 2, "Two Stars"
-        THREE = 3, "Three Stars"
-        FOUR = 4, "Four Stars"
-        FIVE = 5, "Five Stars"
-
     brand = models.ForeignKey("Brand", on_delete=models.PROTECT, related_name="products")
     categories = models.ManyToManyField("Category", related_name="products")
 
@@ -25,7 +17,7 @@ class Product(SlugModel):
     discount_price = models.DecimalField(validators=[MinValueValidator(0)], max_digits=10, decimal_places=2, default=Decimal(0.00))
 
     stock = models.PositiveIntegerField(validators=[MaxValueValidator(1000)], default=0)
-    rating = models.IntegerField(choices=Rating.choices, default=Rating.ZERO,)
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=1)
 
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True, null=True)
     
@@ -38,7 +30,7 @@ class Product(SlugModel):
 
         if self.discount_price > self.price:
             raise ValidationError({"discount_price": "Discount price cannot be greater than the original price."})
-        
+    
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
