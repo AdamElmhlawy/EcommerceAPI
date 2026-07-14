@@ -7,8 +7,12 @@
 # drf folder
 drf/
 
-#db
+# Database
 db.sqlite3
 
-#http file
+# HTTP requests
 api.http
+
+# Python cache
+__pycache__/
+*.py[cod]
