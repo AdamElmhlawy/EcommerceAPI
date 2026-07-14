@@ -6,3 +6,9 @@
 
 # drf folder
 drf/
+
+#db
+db.sqlite3
+
+#http file
+api.http
