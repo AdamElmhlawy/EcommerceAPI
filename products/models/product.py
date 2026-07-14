@@ -18,12 +18,17 @@ class Product(SlugModel):
 
     brand = models.ForeignKey("Brand", on_delete=models.PROTECT, related_name="products")
     categories = models.ManyToManyField("Category", related_name="products")
+
     description = models.TextField()
+
     price = models.DecimalField(validators=[MinValueValidator(10)], max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(validators=[MinValueValidator(0)], max_digits=10, decimal_places=2, default=Decimal(0.00))
+
     stock = models.PositiveIntegerField(validators=[MaxValueValidator(1000)], default=0)
     rating = models.IntegerField(choices=Rating.choices, default=Rating.ZERO,)
+
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True, null=True)
+    
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
